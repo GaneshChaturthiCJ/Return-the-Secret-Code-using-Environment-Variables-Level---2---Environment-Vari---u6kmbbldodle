@@ -2,8 +2,10 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
+require("dotenv").config();
+
 function encryptString(str) {
-  let encrypted = '';
+  let encrypted = "";
   for (let i = 0; i < str.length; i++) {
     let charCode = str.charCodeAt(i);
     let encryptedCharCode = (charCode + 13) % 256;
@@ -23,8 +25,15 @@ HTTP Status Code: 200
 Use the encryptString function given above to encrypt the secret code
 */
 
-app.get('/api/get-env', (req, res) => {
-    //Write your code here
+app.get("/api/get-env", (req, res) => {
+  //Write your code here
+  console.log(process.env.SECRET);
+  const encryptedMsg = encryptString(process.env.SECRET);
+  console.log(encryptedMsg);
+
+  res.status(200).json({
+    secret: encryptedMsg,
+  });
 });
 
 module.exports = app;
